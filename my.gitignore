@@ -24,6 +24,7 @@ hs_err_pid*
 # IntelliJ (assuming maven or gradle)
 .idea
 /out/
+*.iml
 
 # Eclipse (assuming maven or gradle)
 .settings/
