@@ -14,5 +14,6 @@
         ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
         br = branch
         ci = commit --verbose
-
-
+        unstage = reset HEAD --
+        # Clean local branches that are already merged to master
+        clean-branches = !git branch --merged master | egrep -v \"(^\\*|master|dev)$\" | xargs -r git branch -d
