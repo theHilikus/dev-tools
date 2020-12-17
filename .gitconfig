@@ -17,3 +17,5 @@
         unstage = reset HEAD --
         # Clean local branches that are already merged to master
         clean-branches = !git branch --merged master | egrep -v \"(^\\*|master|dev)$\" | xargs -r git branch -d
+[fetch]
+        prune = true
