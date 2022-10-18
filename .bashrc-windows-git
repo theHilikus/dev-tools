@@ -1,31 +1,32 @@
 # bashrc for windows using git bash
-# it also needs git-prompt.sh in ~/.config/git
+# Needs installation of Starship https://starship.rs
 
-# Enable git autocomplete
-if test -z "$WINELOADERNOEXEC"
-then
-		GIT_EXEC_PATH="$(git --exec-path 2>/dev/null)"
-		COMPLETION_PATH="${GIT_EXEC_PATH%/libexec/git-core}"
-		COMPLETION_PATH="${COMPLETION_PATH%/lib/git-core}"
-		COMPLETION_PATH="$COMPLETION_PATH/share/git/completion"
-		if test -f "$COMPLETION_PATH/git-prompt.sh"
-		then
-			. "$COMPLETION_PATH/git-completion.bash"
-			. "$COMPLETION_PATH/git-prompt.sh"
-		fi
-fi
+function set_win_title() {
+    local cmd=" ($@)"
+    if [[ "$cmd" == " (starship_precmd)" || "$cmd" == " ()" ]]
+    then
+      cmd=""
+    fi
+    if [[ $PWD == $HOME ]]
+    then
+      if [[ $SSH_TTY ]]
+      then
+        echo -ne "\033]0; 🏛️ @ $HOSTNAME ~$cmd\a" < /dev/null
+      else
+        echo -ne "\033]0; 🏠 ~$cmd\a" < /dev/null
+      fi
+    else
+      BASEPWD=$(basename "$PWD")
+      if [[ $SSH_TTY ]]
+      then
+        echo -ne "\033]0; 🌩️ $BASEPWD @ $HOSTNAME $cmd\a" < /dev/null
+      else
+        echo -ne "\033]0; 📁 $BASEPWD $cmd\a" < /dev/null
+      fi
+    fi
 
-# Config git prompt
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWUPSTREAM="auto"
-GIT_PS1_SHOWCOLORHINTS=0
-GIT_PS1_STATESEPARATOR="|"
+}
+starship_precmd_user_func="set_win_title"
 
-# Set prompt
-__PS1_BEFORE='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\n'
-__PS1_TIME='\[\e[97;104m\][\A] '
-__PS1_DIR='\[\e[30;43m\] \w '
-__PS1_GIT_BRANCH='\[\e[97;45m\] `__git_ps1 "(%s)"`'
-__PS1_AFTER='\[\e[0m\]\n\n$ '
-export PS1="${__PS1_BEFORE}${__PS1_TIME}${__PS1_DIR}${__PS1_GIT_BRANCH}${__PS1_AFTER}"
+eval "$(starship init bash)"
+trap "$(trap -p DEBUG |  awk -F"'" '{print $2}');set_win_title \${BASH_COMMAND}" DEBUG

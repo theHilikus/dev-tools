@@ -1,0 +1,53 @@
+format = """
+[](fg:cyan)\
+$directory\
+[](bg:purple fg:cyan)\
+$git_branch$git_commit$git_state\
+$git_status\
+[](fg:purple bg:208)\
+$package\
+[](fg:208 bg:#FCA17D)\
+$cmd_duration\
+[](fg:#FCA17D)
+$time\
+$character\
+"""
+
+
+[directory]
+style = 'bg:cyan bold fg:white'
+format = '[$path]($style)[$read_only]($read_only_style)'
+use_os_path_sep = false
+read_only_style = 'bg:cyan bold fg:white'
+truncation_symbol = '…/'
+
+[git_branch]
+symbol = ""
+style = 'bg:purple fg:white bold'
+format = '[ $symbol $branch ]($style)'
+
+[git_commit]
+style = 'bg:purple fg:white bold'
+format = '[\($hash$tag\) ]($style)'
+
+[git_state]
+format = '[\($state($progress_current/$progress_total)\) ]($style)'
+style = 'bg:purple fg:white bold'
+
+[git_status]
+style = 'bg:purple fg:white bold'
+format = '[(| $all_status$ahead_behind )]($style)'
+modified = '*'
+
+[package]
+style = 'bg:208 fg:white bold'
+format = '[ $version ]($style)'
+
+[cmd_duration]
+style = 'bg:#FCA17D fg:white bold'
+format = '[ took $duration]($style)'
+
+[time]
+disabled = false
+#style = 'white bold'
+format = '[ $time ]($style)'
