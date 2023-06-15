@@ -31,7 +31,7 @@ style = 'bg:purple fg:white bold'
 format = '[\($hash$tag\) ]($style)'
 
 [git_state]
-format = '[\($state($progress_current/$progress_total)\) ]($style)'
+format = '[\($state( $progress_current/$progress_total)\) ]($style)'
 style = 'bg:purple fg:white bold'
 
 [git_status]
